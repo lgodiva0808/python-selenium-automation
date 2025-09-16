@@ -7,6 +7,7 @@ from time import sleep
 def open_main(context):
     context.driver.get('https://www.target.com/')
 
+
 @when('Click Account button')
 def click_account_button(context):
     context.driver.find_element(By.XPATH, "//*[@data-test='@web/AccountLink']").click()
