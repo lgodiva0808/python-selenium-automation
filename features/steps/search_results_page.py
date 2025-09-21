@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditiond as EC
 from behave import given, when, then
 from time import sleep
 
@@ -18,13 +19,16 @@ def verify_search_results(context, product):
 
 @when('Click on Add to Cart button')
 def click_add_to_cart(context):
-    sleep(7)
     context.driver.find_element(*ADD_TO_CART_BTN).click()
+    context.driver.wait.until(
+        EC.visibility_of_element_located(SIDE_NAV_PRODUCT_NAME),
+        message='Side navigation product did not appear'
+    )
 
-# @when('Store product name')
-# def store_product_name(context):
-#     context.product_name = context.driver.find_element(*SIDE_NAV_PRODUCT_NAME).text
-#     print('Product name stored:', context.product_name)
+@when('Store product name')
+def store_product_name(context):
+    context.product_name = context.driver.find_element(*SIDE_NAV_PRODUCT_NAME).text
+    print('Product name stored:', context.product_name)
 
 @when('Confirm Add to Cart button from side navigation')
 def confirm_add_to_cart_side_navigation(context):
@@ -37,10 +41,10 @@ def open_cart_page(context):
     context.driver.find_element(*VIEW_CART_BTN).click()
     sleep(5)
 
-# @then('Verify cart has correct product')
-# def verify_product_name(context):
-#     product_name_in_cart = context.driver.find_element(*PRODUCT_NAME).text
-#     print('Name in cart: ', product_name_in_cart)
-#
-#     assert context.product_name[:20] == product_name_in_cart[:20],
-#         f'Expected {context.product_name[:20]} but got {product_name_in_cart[:20]}'
+@then('Verify cart has correct product')
+def verify_product_name(context):
+    product_name_in_cart = context.driver.find_element(*PRODUCT_NAME).text
+    print('Name in cart: ', product_name_in_cart)
+
+    assert context.product_name[:20] == product_name_in_cart[:20],
+        f'Expected {context.product_name[:20]} but got {product_name_in_cart[:20]}'
