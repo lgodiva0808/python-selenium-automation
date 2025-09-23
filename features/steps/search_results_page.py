@@ -1,9 +1,9 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditiond as EC
+from selenium.webdriver.support import expected_conditions as EC
 from behave import given, when, then
 from time import sleep
 
-SEARCH_RESULTS_TXT = (By.XPATH, "//div[@data-test='lp-resultsCount']")
+
 ADD_TO_CART_BTN = (By.CSS_SELECTOR, '[id*="addToCartButtonOrTextIdFor"]')
 ADD_TO_CART_SIDE_NAVIGATION = (By.CSS_SELECTOR, '[data-test="shippingButton"]')
 VIEW_CART_BTN = (By.CSS_SELECTOR, 'a[class*="ndsButtonSecondary__iSf2I"]')
@@ -13,8 +13,7 @@ PRODUCT_NAME = (By.CSS_SELECTOR, '[data-test="cartItem-title"]')
 
 @then('Verify search results are shown for {product}')
 def verify_search_results(context, product):
-    actual_text = context.browser.find_element(*SEARCH_RESULTS_TXT).text
-    assert product in actual_text, f'Error. Expected text {product} but got {actual_text}'
+    context.app.search_results_page.verify_search_results(product)
 
 
 @when('Click on Add to Cart button')
@@ -46,5 +45,5 @@ def verify_product_name(context):
     product_name_in_cart = context.driver.find_element(*PRODUCT_NAME).text
     print('Name in cart: ', product_name_in_cart)
 
-    assert context.product_name[:20] == product_name_in_cart[:20],
+    assert context.product_name[:20] == product_name_in_cart[:20], \
         f'Expected {context.product_name[:20]} but got {product_name_in_cart[:20]}'
