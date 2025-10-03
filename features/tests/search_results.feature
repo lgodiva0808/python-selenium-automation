@@ -6,6 +6,7 @@ Feature: Tests for Target search functionality
     Given Open target main page
     When Search for tea
     Then Verify search results are shown for tea
+
 #
 #  Scenario: User can search for iphone on Target
 #    Given Open Target main page

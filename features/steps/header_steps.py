@@ -14,8 +14,8 @@ def search_for(context, search_word):
 
 @when('Click Account button')
 def click_account_button(context):
-    context.driver.find_element(By.XPATH, "//*[@data-test='@web/AccountLink']").click()
-    sleep(2)
+    context.app.header.click_acct_btn()
+
 
 
 @when('Click on Cart icon')
