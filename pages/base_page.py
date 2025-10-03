@@ -1,3 +1,5 @@
+from asyncio import timeout
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -5,6 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 class Page:
     def __init__(self,drive):
+        self.timeout = timeout
         self.driver = drive
         self.wait = WebDriverWait(self.driver, 10)
 
@@ -62,5 +65,29 @@ class Page:
         actual_url = self.driver.current_url
         assert expected_partial_url == actual_url,\
              f'Expected {expected_partial_url} did not match {actual_url}'
+
+
+    def wait_until_url_contains(self, text):
+        WebDriverWait(self.driver, 10).until(
+            EC.url_contains(text),
+            message=f"URL did not contain '{text}' within {self.timeout} seconds"
+        )
+
+
+    def switch_to_newly_opened_window(self):
+        self.wait.until(EC.new_window_is_opened)
+        current_windows = self.driver.window_handles
+        self.driver.switch_to.window(current_windows[-1])
+        print('Current windows:', current_windows)
+        print('Switching to window:', current_windows[1])
+        self.driver.switch_to.window(current_windows[1])
+
+    def close(self):
+        self.driver.close()
+
+    def switch_to_window_by_id(self,window_id):
+        print('Switching to window: ', window_id)
+        self.driver.switch_to.window(window_id)
+
 
 
